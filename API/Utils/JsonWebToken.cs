@@ -21,12 +21,12 @@ public class JsonWebToken
             Expires = informacoesParaToken.Expires
         };
 
-        return GerarTokenString(tokenDescriptor);
+        return _gerarTokenString(tokenDescriptor);
     }
 
     private (SigningCredentials SigningCredentials, string Audience, string Issuer, DateTime Expires) BuscarInformacoesDoToken(IConfiguration _configuration)
     {
-        var signingCredentials = GerarCredenciais(_configuration["JwtBearerTokenSettings:SecretKey"]);
+        var signingCredentials = _gerarCredenciais(_configuration["JwtBearerTokenSettings:SecretKey"]);
         double lifeTimeInMinutes = double.Parse(_configuration["JwtBearerTokenSettings:LifeTimeInMinutes"]);
         string audience = _configuration["JwtBearerTokenSettings:Audience"];
         string issuer = _configuration["JwtBearerTokenSettings:Issuer"];
@@ -35,7 +35,7 @@ public class JsonWebToken
         return (signingCredentials, audience, issuer, expires);
     }
 
-    private SigningCredentials GerarCredenciais(string secretKey)
+    private SigningCredentials _gerarCredenciais(string secretKey)
     {
         byte[] key = Encoding.ASCII.GetBytes(secretKey);
         SymmetricSecurityKey symmetricKey = new SymmetricSecurityKey(key);
@@ -44,7 +44,7 @@ public class JsonWebToken
         return signingCredentials;
     }
 
-    private string GerarTokenString(SecurityTokenDescriptor descriptor)
+    private string _gerarTokenString(SecurityTokenDescriptor descriptor)
     {
         var TokenHandler = new JwtSecurityTokenHandler();
         var pretoken = TokenHandler.CreateToken(descriptor);

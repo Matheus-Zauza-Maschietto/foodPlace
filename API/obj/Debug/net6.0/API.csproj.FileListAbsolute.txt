@@ -87,3 +87,4 @@ C:\Users\mathe\OneDrive\Documentos\GitHub\foodPlace\API\bin\Debug\net6.0\runtime
 C:\Users\mathe\OneDrive\Documentos\GitHub\foodPlace\API\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
 C:\Users\mathe\OneDrive\Documentos\GitHub\foodPlace\API\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\mathe\OneDrive\Documentos\GitHub\foodPlace\API\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\mathe\OneDrive\Documentos\GitHub\foodPlace\API\bin\Debug\net6.0\Flunt.dll
