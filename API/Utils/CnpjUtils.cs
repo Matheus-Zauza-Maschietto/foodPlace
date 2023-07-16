@@ -27,7 +27,7 @@ public static class CnpjUtils
         for (int i = 0; i < rodadas; i++)
         {
             digito = int.Parse(digitos[i].ToString());
-            soma += digito * (multiplicador[i] - i);
+            soma += (digito * (multiplicador[i]));
         }
 
         int resto = soma % 11;

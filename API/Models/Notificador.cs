@@ -18,7 +18,7 @@ public abstract class Notificador<T>: Notifiable<Notification>, INotificador
     {
         var notificacoes = this.Notifications.GroupBy(p => p.Key)
                                              .ToDictionary(p => p.Key, p => p.Select(x => x.Message)
-                                             .ToArray());
+                                                                             .ToArray());
         return notificacoes;
 
     }

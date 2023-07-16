@@ -4,6 +4,7 @@ using API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(FoodPlaceContext))]
-    partial class FoodPlaceContextModelSnapshot : ModelSnapshot
+    [Migration("20230716131732_RemovendoEnderecoIdDeNovo")]
+    partial class RemovendoEnderecoIdDeNovo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,27 @@ namespace API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("API.Models.Categoria", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categoria");
+                });
 
             modelBuilder.Entity("API.Models.Endereco", b =>
                 {
@@ -140,6 +164,21 @@ namespace API.Migrations
                     b.HasIndex("LojaId");
 
                     b.ToTable("Produto");
+                });
+
+            modelBuilder.Entity("API.Models.ProdutoCategoria", b =>
+                {
+                    b.Property<int>("CategoriaId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProdutoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("CategoriaId", "ProdutoId");
+
+                    b.HasIndex("ProdutoId");
+
+                    b.ToTable("ProdutoCategoria");
                 });
 
             modelBuilder.Entity("API.Models.Usuario", b =>
@@ -399,6 +438,25 @@ namespace API.Migrations
                     b.Navigation("Loja");
                 });
 
+            modelBuilder.Entity("API.Models.ProdutoCategoria", b =>
+                {
+                    b.HasOne("API.Models.Categoria", "Categoria")
+                        .WithMany("Produtos")
+                        .HasForeignKey("CategoriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Models.Produto", "Produto")
+                        .WithMany("Categorias")
+                        .HasForeignKey("ProdutoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Categoria");
+
+                    b.Navigation("Produto");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -450,9 +508,19 @@ namespace API.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("API.Models.Categoria", b =>
+                {
+                    b.Navigation("Produtos");
+                });
+
             modelBuilder.Entity("API.Models.Loja", b =>
                 {
                     b.Navigation("Produtos");
+                });
+
+            modelBuilder.Entity("API.Models.Produto", b =>
+                {
+                    b.Navigation("Categorias");
                 });
 
             modelBuilder.Entity("API.Models.Usuario", b =>

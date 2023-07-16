@@ -19,6 +19,7 @@ namespace API.Controllers
             _repositorio = repositorio;
         }
 
+        [Authorize]
         [HttpPost("login")]
         public async Task<IResult> Login(LoginDto loginDto)
         {

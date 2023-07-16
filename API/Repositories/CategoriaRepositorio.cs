@@ -1,12 +1,11 @@
 ﻿using API.Context;
+using API.Models;
+using API.Responses;
 
 namespace API.Repositories;
 
-public class CategoriaRepositorio
+public class CategoriaRepositorio : Repositorio
 {
-	private readonly FoodPlaceContext _context;
-	public CategoriaRepositorio(FoodPlaceContext context)
-	{
-		_context = context;
-    }
+    public CategoriaRepositorio(FoodPlaceContext context) : base(context)
+    {}
 }

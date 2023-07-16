@@ -12,7 +12,6 @@ public class FoodPlaceContext: IdentityDbContext<IdentityUser>
     public DbSet<Loja> Loja { get; set; }
     public DbSet<Endereco> Endereco { get; set; }
     public DbSet<Produto> Produto { get; set; }
-    public DbSet<Categoria> Categoria { get; set; }
 
     public FoodPlaceContext(DbContextOptions<FoodPlaceContext> options) : base(options)
     {
@@ -21,26 +20,9 @@ public class FoodPlaceContext: IdentityDbContext<IdentityUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        _configurarManyToManyCategoriasProdutos(builder);
         _setarConstrainsLoja(builder);
         _setarConstrainsEndereco(builder);
         _setarConstrainsProduto(builder);
-    }
-
-    private void _configurarManyToManyCategoriasProdutos(ModelBuilder builder)
-    {
-        builder.Entity<ProdutoCategoria>()
-            .HasKey(ad => new { ad.CategoriaId, ad.ProdutoId });
-
-        builder.Entity<ProdutoCategoria>()
-            .HasOne(ad => ad.Produto)
-            .WithMany(a => a.Categorias)
-            .HasForeignKey(ad => ad.ProdutoId);
-
-        builder.Entity<ProdutoCategoria>()
-            .HasOne(ad => ad.Categoria)
-            .WithMany(d => d.Produtos)
-            .HasForeignKey(ad => ad. CategoriaId);
     }
 
     private void _setarConstrainsLoja(ModelBuilder builder)

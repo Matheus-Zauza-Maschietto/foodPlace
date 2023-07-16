@@ -9,7 +9,6 @@ public class LojaDto: Notificador<LojaDto>
     public string Telefone { get; set; }
     public string Email { get; set; }
     public string CNPJ { get; set; }
-    public Endereco Endereco { get; set; }
     public override void Validar()
     {
         Contrato
@@ -19,7 +18,19 @@ public class LojaDto: Notificador<LojaDto>
             .IsTrue(CnpjUtils.Validar(CNPJ), nameof(CNPJ), "CNPJ invalido")
             .IsNotNullOrEmpty(Telefone, "telefone")
             .IsTrue(TelefoneUtils.Validar(this.Telefone), nameof(Telefone), "Telefone invalido. Use o formato: XX XXXXX-XXXX");
-
         base.Validar();
+    }
+
+    public LojaDto()
+    {
+
+    }
+
+    public LojaDto(Loja loja)
+    {
+        Nome = loja.Nome;
+        Telefone = loja.Telefone;
+        Email = loja.Email;
+        CNPJ = loja.CNPJ;
     }
 }

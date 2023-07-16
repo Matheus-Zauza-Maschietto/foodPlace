@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using API.Dtos;
+using API.Responses;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/")]
     [ApiController]
     public class CategoriaController : ControllerBase
-    {
-    }
+    { }
 }
