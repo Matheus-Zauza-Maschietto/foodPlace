@@ -45,7 +45,7 @@ public class UsuarioRepositorio
     {
         var user = new IdentityUser
         {
-            UserName = cadastroDto.Nome,
+            UserName = cadastroDto.Nome.Replace(" ", ""),
             Email = cadastroDto.Email
         };
 
@@ -55,8 +55,21 @@ public class UsuarioRepositorio
         {
             _userManager.AddClaimsAsync(user, _gerarClaims(cadastroDto));
         }
+        else
+        {
+            cadastroDto = _gerarListaDeErrosIdentity(cadastroDto, result.Errors);
+        }
 
         return result.Succeeded;
+    }
+
+    private CadastroDto _gerarListaDeErrosIdentity(CadastroDto cadastroDto, IEnumerable<IdentityError> erros)
+    {
+        foreach (var erro in erros)
+        {
+            cadastroDto.AddNotification(erro.Code, erro.Description);
+        }
+        return cadastroDto;
     }
 
     private IEnumerable<Claim> _gerarClaims(CadastroDto cadastroDto)
@@ -66,7 +79,7 @@ public class UsuarioRepositorio
                 new Claim("CPF",  CpfUtils.Formatar(cadastroDto.CPF)),
                 new Claim("Telefone", TelefoneUtils.Formatar(cadastroDto.Telefone)),
                 new Claim("DataDeNascimento", cadastroDto.DataNascimento.ToString("dd-MM-yyyy")),
-                new Claim("Email", cadastroDto.Email),
+                new Claim("Nome", cadastroDto.Nome),
             };
         return userClaims;
     }

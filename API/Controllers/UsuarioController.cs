@@ -22,50 +22,67 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<IResult> Login(LoginDto loginDto)
         {
+            ResponseModel<LoginResponse> response;
             loginDto.Validar();
+
             if (!loginDto.IsValid)
             {
-                return Results.BadRequest(loginDto.GerarNotificacoes());
+                response = new ResponseModel<LoginResponse>(loginDto, null);
+                return Results.BadRequest(response);
             }
 
             IdentityUser usuario = await _repositorio.BuscarUsuarioPorEmail(loginDto.Email);
-
             if (usuario is null)
             {
                 loginDto.AddNotification("email", "email not found");
-                return Results.NotFound(loginDto.GerarNotificacoes());
+                response = new ResponseModel<LoginResponse>(loginDto, null);
+                return Results.NotFound(response);
             }
 
             if (!await _repositorio.VerificarSenha(usuario, loginDto.Senha))
             {
                 loginDto.AddNotification("senha", "incorrect senha");
-                return Results.NotFound(loginDto.GerarNotificacoes());
+                response = new ResponseModel<LoginResponse>(loginDto, null);
+                return Results.NotFound(response);
             }
 
             string token = await _repositorio.GerarToken(loginDto.Email);
-            return Results.Ok(new LoginResponse(token));
+            response = new ResponseModel<LoginResponse>(loginDto, new LoginResponse(token));
+
+            return Results.Ok(response);
         }
 
         [HttpPost("cadastro")]
         public async Task<IResult> Cadastro(CadastroDto cadastroDto)
         {
+            ResponseModel<CadastroResponse> response;
             cadastroDto.Validar();
+
             if (!cadastroDto.IsValid)
             {
-                return Results.BadRequest(cadastroDto.GerarNotificacoes());
+                response = new ResponseModel<CadastroResponse>(cadastroDto, null);
+                return Results.BadRequest(response);
             }
 
             IdentityUser usuario = await _repositorio.BuscarUsuarioPorEmail(cadastroDto.Email);
             if (usuario is not null)
             {
                 cadastroDto.AddNotification("email", "email already exists at another account");
-                return Results.BadRequest(cadastroDto.GerarNotificacoes());
+                response = new ResponseModel<CadastroResponse>(cadastroDto, null);
+                return Results.BadRequest(response);
             }
 
             if (await _repositorio.CriarUsuario(cadastroDto))
-                return Results.Created("/login", new CadastroResponse(cadastroDto.Email));
+            {
+                response = new ResponseModel<CadastroResponse>(cadastroDto, new CadastroResponse(cadastroDto.Email));
+                return Results.Created("/login", response);
+            }
             else
-                return Results.UnprocessableEntity();
+            {
+                response = new ResponseModel<CadastroResponse>(cadastroDto, null);
+                return Results.UnprocessableEntity(response);
+            }
+
         }
     }
 }

@@ -4,7 +4,7 @@ public static class CpfUtils
 {
     public static bool Validar(string cpf)
     {
-        cpf = cpf.Trim().Replace(".", "").Replace("-", "");
+        cpf = String.RemoverFormatacao(cpf, new string[] { " ", "-", "." });
 
         if (cpf.Length != 11 || !VerificarDigitosIguais(cpf))
         {
@@ -23,16 +23,15 @@ public static class CpfUtils
         int soma = 0;
         int digito;
         
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < rodadas; i++)
         {
             digito = int.Parse(digitos[i].ToString());
-            soma += digito * (10 - i);
+            soma += digito * ((rodadas+1) - i);
         }
 
         int resto = soma % 11;
         int digitoVerificador = 11 - resto;
         return  digitoVerificador.ToString() == verificador;
-
     }
 
     private static bool VerificarDigitosIguais(string cpf)

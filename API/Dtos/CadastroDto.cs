@@ -17,9 +17,9 @@ public class CadastroDto: Notificador<CadastroDto>
             .IsNotNullOrEmpty(Nome.Trim(), "nome")
             .IsEmail(Email, "email")
             .IsNotNullOrEmpty(CPF, "cpf")
-            .IsFalse(CpfUtils.Validar(CPF), nameof(CPF), "CPF invalido")
+            .IsTrue(CpfUtils.Validar(CPF), nameof(CPF), "CPF invalido")
             .IsNotNullOrEmpty(Telefone, "telefone")
-            .IsFalse(TelefoneUtils.Validar(this.Telefone), nameof(Telefone), "Telefone invalido. Use o formato: XX XXXXX-XXXX")
+            .IsTrue(TelefoneUtils.Validar(this.Telefone), nameof(Telefone), "Telefone invalido. Use o formato: XX XXXXX-XXXX")
             .IsGreaterOrEqualsThan(Senha, 8, "senha")
             .IsNotNull(DataNascimento, "data de nascimento");
         base.Validar();

@@ -9,6 +9,5 @@ public class Endereco
     public string Numero { get; set; }
     public string Complemento { get; set; }
     public string CEP { get; set; }
-    public Loja Loja { get; set; }
     public int LojaId { get; set; }
 }
