@@ -28,24 +28,36 @@ public class ProdutoRepositorio : Repositorio
 
     public IEnumerable<ProdutoResponse> ListarProdutosDisponivelPorLoja(int lojaId)
     {
+
+
         var produtos = _context.Produto
-                                .Where(produto => produto.Disponivel && produto.LojaId == lojaId)
+                                .Where(produto => produto.Disponivel && produto.LojaId == lojaId && )
                                 .Select(produto => new ProdutoResponse(produto.Id, produto.Nome, produto.Descricao, produto.Disponivel, produto.Preco, ""));
         return produtos;
     }
 
-    public IEnumerable<ProdutoResponse> ListarProdutosPorLoja(int lojaId)
+    public IEnumerable<ProdutoResponse> ListarProdutosPorLoja(int lojaId, string emailUsuario)
     {
+        var usuario = BuscarUsuarioPorEmail(emailUsuario);
+
         var produtos = _context.Produto
-                                .Where(produto => produto.LojaId == lojaId)
+                                .Where(produto => produto.LojaId == lojaId && produto.Loja.DonoId == usuario.Id)
                                 .Select(produto => new ProdutoResponse(produto.Id, produto.Nome, produto.Descricao, produto.Disponivel, produto.Preco, ""));
+        
+        if (produtos is null)
+        {
+            return produtos;
+        }
+
         return produtos;
     }
 
-    public ProdutoResponse BuscarProdutoPorLojaPorId(int lojaId, Guid produtoId)
+    public ProdutoResponse BuscarProdutoPorLojaPorId(Guid produtoId, string emailUsuario)
     {
+        var usuario = BuscarUsuarioPorEmail(emailUsuario);
+
         var produto = _context.Produto
-                                .FirstOrDefault(produto => produto.LojaId == lojaId && produto.Id == produtoId);
+                                .FirstOrDefault(produto => produto.Loja.DonoId == usuario.Id && produto.Id == produtoId);
 
         if(produto is null)
         {
@@ -82,7 +94,7 @@ public class ProdutoRepositorio : Repositorio
         produto.Atualizar(produtoDto);
         _context.Produto.Update(produto);
         _context.SaveChanges();
-        return new ProdutoResponse(Menssagem: "Produto atualizado com sucesso");
+        return new ProdutoResponse(produto.Id, produto.Nome, produto.Descricao, produto.Disponivel, produto.Preco, Menssagem: "Produto atualizado com sucesso");
     }
 
     public ProdutoResponse AtualizarProdutoPorIdComEmailUsuario(Guid produtoId, string emailUsuario, bool disponibilidade)
@@ -97,6 +109,6 @@ public class ProdutoRepositorio : Repositorio
         produto.Disponivel = disponibilidade;
         _context.Produto.Update(produto);
         _context.SaveChanges();
-        return new ProdutoResponse(Menssagem: "Produto atualizado com sucesso");
+        return new ProdutoResponse(produto.Id, produto.Nome, produto.Descricao, produto.Disponivel, produto.Preco, Menssagem: "Produto atualizado com sucesso");
     }
 }

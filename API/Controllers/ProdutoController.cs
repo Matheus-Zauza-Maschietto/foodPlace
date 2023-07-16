@@ -57,8 +57,9 @@ namespace API.Controllers
         public async Task<IResult> ListarProdutosPorLoja([FromRoute] int idLoja)
         {
             ResponseModel<IEnumerable<ProdutoResponse>> response;
-            IEnumerable<ProdutoResponse> produtoResponse =  _produtoRepositorio.ListarProdutosPorLoja(idLoja);
+            string emailUsuario = User.FindFirstValue(ClaimTypes.Email);
 
+            IEnumerable<ProdutoResponse> produtoResponse =  _produtoRepositorio.ListarProdutosPorLoja(idLoja, emailUsuario);
             return Results.Ok(new ResponseModel<IEnumerable<ProdutoResponse>>(produtoResponse));
         }
 
@@ -66,7 +67,9 @@ namespace API.Controllers
         public async Task<IResult> BuscarProdutoPorLoja([FromRoute] int idLoja, [FromRoute] Guid idProduto)
         {
             ResponseModel<ProdutoResponse> response;
-            ProdutoResponse produtoResponse = _produtoRepositorio.BuscarProdutoPorLojaPorId(idLoja, idProduto);
+            string emailUsuario = User.FindFirstValue(ClaimTypes.Email);
+
+            ProdutoResponse produtoResponse = _produtoRepositorio.BuscarProdutoPorLojaPorId(idProduto, emailUsuario);
 
             if(produtoResponse.Id is null)
             {
@@ -77,10 +80,11 @@ namespace API.Controllers
         }
 
         [HttpDelete("{idProduto:Guid}")]
-        public async Task<IResult> DeletarProdutoPorId([FromRoute] int idLoja, [FromRoute] Guid idProduto)
+        public async Task<IResult> DeletarProdutoPorId([FromRoute] Guid idProduto)
         {
             ResponseModel<ProdutoResponse> response;
             string emailUsuario = User.FindFirstValue(ClaimTypes.Email);
+
             ProdutoResponse produtoResponse = _produtoRepositorio.DeletarProdutoPorIdComEmailUsuario(idProduto, emailUsuario);
 
             if (produtoResponse.Id is null)
@@ -114,7 +118,7 @@ namespace API.Controllers
             return Results.Ok(new ResponseModel<ProdutoResponse>(produtoDto, produtoResponse));
         }
 
-        [HttpPatch()]
+        [HttpPatch("{idProduto:Guid}")]
         public async Task<IResult> AtualizarDisponibilidadeProduto([FromRoute] Guid idProduto, bool disponibilidade)
         {
             ResponseModel<ProdutoResponse> response;

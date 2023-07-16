@@ -30,7 +30,8 @@ public static class CpfUtils
         }
 
         int resto = soma % 11;
-        int digitoVerificador = 11 - resto;
+
+        int digitoVerificador = resto < 2 ? 0 : 11 - soma % 11;
         return  digitoVerificador.ToString() == verificador;
     }
 
