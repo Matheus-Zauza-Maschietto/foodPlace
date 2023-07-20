@@ -60,8 +60,7 @@
 <hr/>
 <h2>Implementações Futuras</h2>
 <p>
-    Para implementações futuras existe o cadastro de um endereço para as lojas, fazendo uso de um middleware entre as
-    API do IBGE: <br>
+    Para implementações futuras existe o cadastro de um endereço para as lojas, fazendo uso de um middleware entre o sistema e as APIs do IBGE: <br>
     
       <code>https://servicodados.ibge.gov.br/api/v1/localidades/estados<br></code><br>
       <code>https://servicodados.ibge.gov.br/api/v1/localidades/municipios<br></code>
