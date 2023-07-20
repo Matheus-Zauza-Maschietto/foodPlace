@@ -28,7 +28,6 @@ public class ProdutoRepositorio : Repositorio
 
     public IEnumerable<ProdutoResponse> ListarProdutosDisponivelPorLoja(int lojaId)
     {
-Reti
         var produtos = _context.Produto
                                 .Where(produto => produto.Disponivel && produto.LojaId == lojaId)
                                 .Select(produto => new ProdutoResponse(produto.Id, produto.Nome, produto.Descricao, produto.Disponivel, produto.Preco, ""));
