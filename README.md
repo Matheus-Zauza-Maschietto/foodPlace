@@ -54,7 +54,8 @@
 <p>
     Para documentação da API, fica à disposição a ferramenta SWAGGER. <br>
     Pode ser acessada após inicialização do projeto na URL:
-    <code>https://localhost:[porta-usada]/swagger/index.html</code>
+    <code>https://localhost:[porta-usada]/swagger/index.html</code> <br>
+    Diagramas seguem na pasta 
 </p>
 <hr/>
 <h2>Implementações Futuras</h2>
