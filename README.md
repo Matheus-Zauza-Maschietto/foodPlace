@@ -61,10 +61,10 @@
 <p>
     Para implementações futuras existe o cadastro de um endereço para as lojas, fazendo uso de um middleware entre as
     API do IBGE: <br>
-    <code>
-        https://servicodados.ibge.gov.br/api/v1/localidades/estados <br>
-        https://servicodados.ibge.gov.br/api/v1/localidades/municipios <br>
-    </code>
+    
+      <code>https://servicodados.ibge.gov.br/api/v1/localidades/estados<br></code><br>
+      <code>https://servicodados.ibge.gov.br/api/v1/localidades/municipios<br></code>
+    
     Categorias são importantes para filtragem e distinção, sendo assim outra próxima implementação. Permitir que o
     vendedor possa cadastrar suas próprias
     categorias, editá-las e excluí-las, além de atribuir a seus produtos elas.
