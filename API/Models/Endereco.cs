@@ -10,4 +10,5 @@ public class Endereco
     public string Complemento { get; set; }
     public string CEP { get; set; }
     public int LojaId { get; set; }
+    public Loja Loja { get; set; }
 }

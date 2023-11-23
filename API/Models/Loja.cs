@@ -13,6 +13,7 @@ public class Loja
     public string Email { get; set; }
     public string CNPJ { get; set; }
     public List<Produto> Produtos { get; set; }
+    public Endereco Endereco { get; set; }
 
     public Loja()
     {
